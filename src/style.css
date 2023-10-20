@@ -587,11 +587,14 @@ span.Delivered {
   margin-left: 50%;
   transform: translateX(-50%);
 }
-.login a {
-  display: block;
+.loginLinks {
   text-align: center;
-  margin-top: 15px;
+}
+.login a {
+  display: inline-block;
+  text-align: center;
   transition: 0.4s;
+  margin: 15px 5px;
 }
 .login a:hover {
   color: #09b5e4;

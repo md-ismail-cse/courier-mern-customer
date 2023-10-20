@@ -103,7 +103,12 @@ const Login = () => {
                   </FormControl>
                   <input type="submit" className="btnPrimary" value="Login" />
                 </form>
-                <Link to="/signup">Registration?</Link>
+                <div className="loginLinks">
+                  <Link to="/signup">Registration?</Link>
+                  <Link to={process.env.REACT_APP_RIDER} target="_blank">
+                    Rider?
+                  </Link>
+                </div>
               </div>
             </div>
           </div>

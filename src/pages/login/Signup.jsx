@@ -188,7 +188,10 @@ const Signup = () => {
                   />
                   <input type="submit" className="btnPrimary" />
                 </form>
-                <Link to="/">Login?</Link>
+                <div className="loginLinks">
+                  <Link to="/">Login?</Link>
+                  <Link to={process.env.REACT_APP_RIDER}>Rider?</Link>
+                </div>
               </div>
             </div>
           </div>
