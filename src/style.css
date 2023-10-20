@@ -252,11 +252,11 @@ a {
 .css-t89xny-MuiDataGrid-columnHeaderTitle {
   font-weight: bold !important;
 }
-.css-5wly58-MuiDataGrid-root .MuiDataGrid-cell:focus {
+.MuiDataGrid-cell:focus {
   outline: none !important;
 }
-.css-5wly58-MuiDataGrid-root .MuiDataGrid-columnHeader:focus-within,
-.css-5wly58-MuiDataGrid-root .MuiDataGrid-cell:focus-within {
+.MuiDataGrid-columnHeader:focus-within,
+.MuiDataGrid-cell:focus-within {
   outline: none !important;
 }
 .tableLink a {
