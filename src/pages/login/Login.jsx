@@ -105,9 +105,7 @@ const Login = () => {
                 </form>
                 <div className="loginLinks">
                   <Link to="/signup">Registration?</Link>
-                  <Link to={process.env.REACT_APP_RIDER} target="_blank">
-                    Rider?
-                  </Link>
+                  <Link to={process.env.REACT_APP_RIDER}>Rider?</Link>
                 </div>
               </div>
             </div>
