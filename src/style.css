@@ -321,15 +321,15 @@ span.Delivered {
 /* Data Table End */
 
 /* Form Start */
-.form-box .css-wb57ya-MuiFormControl-root-MuiTextField-root,
-.css-q8hpuo-MuiFormControl-root {
+.form > div {
   margin-bottom: 15px !important;
 }
-.css-11qr2p8-MuiButtonBase-root-MuiButton-root {
+.MuiButton-sizeSmall {
   background: #09b5e4 !important;
   margin-right: 10px !important;
+  margin-bottom: 5px !important;
 }
-.css-1wc848c-MuiFormHelperText-root {
+.MuiFormHelperText-sizeMedium {
   color: #09b5e4 !important;
 }
 .form-box {
@@ -388,11 +388,11 @@ span.Delivered {
   text-align: center;
   padding: 13px 0px;
 }
-.itemIcon .css-1wlk0hk-MuiAvatar-root {
-  margin: 0 auto;
-  height: 63px;
-  width: 63px;
-  margin-top: -11px;
+.itemIcon .MuiAvatar-circular {
+  margin: 0 auto !important;
+  height: 63px !important;
+  width: 63px !important;
+  margin-top: -11px !important;
 }
 /* Home Page End */
 
@@ -407,9 +407,9 @@ span.Delivered {
   text-align: center;
 }
 .changePicture .content .MuiAvatar-circular {
-  margin-bottom: 15px;
-  height: 100px;
-  width: 100px;
+  margin-bottom: 15px !important;
+  height: 100px !important;
+  width: 100px !important;
 }
 .profileBox table th,
 .profileBox table td {
@@ -418,10 +418,10 @@ span.Delivered {
   text-align: left;
   vertical-align: top;
 }
-.profileBox table .css-1wlk0hk-MuiAvatar-root {
-  height: 100px;
-  width: 100px;
-  margin: 0 auto;
+.profileBox table .MuiAvatar-circular {
+  height: 100px !important;
+  width: 100px !important;
+  margin: 0 auto !important;
 }
 .profileBox table th {
   text-align: right;
@@ -467,9 +467,9 @@ span.Delivered {
 .singleParcel .content .parcelInner .parcelBox .form-box .profileBox table td {
   text-align: center;
 }
-.singleParcel .parcelInner .parcelBox .profileBox .css-1wlk0hk-MuiAvatar-root {
-  width: 70px;
-  height: 70px;
+.singleParcel .parcelInner .parcelBox .profileBox .MuiAvatar-circular {
+  width: 70px !important;
+  height: 70px !important;
 }
 /* Parcels Page End */
 
