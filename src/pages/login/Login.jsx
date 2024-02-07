@@ -109,7 +109,7 @@ const Login = () => {
                   />
                 </form>
                 <Link to="/signup">Registration?</Link>
-                <Link to="http://localhost:4000/" target="_blank">
+                <Link to="https://courier-rider.onrender.com/" target="_blank">
                   Rider?
                 </Link>
               </div>
