@@ -105,7 +105,6 @@ const Login = () => {
                     type="submit"
                     value="LOGIN"
                     className="btnPrimary"
-                    value="Login"
                   />
                 </form>
                 <Link to="/signup">Registration?</Link>
