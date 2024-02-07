@@ -1,7 +1,8 @@
-import { Avatar } from "@mui/material";
+import { Alert, Avatar } from "@mui/material";
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import Swal from "sweetalert2";
 import Loader from "../../components/loader/Loader";
 
 const HomeItems = () => {
@@ -15,7 +16,12 @@ const HomeItems = () => {
   useEffect(() => {
     const fatchCustomer = async () => {
       const { data } = await axios.get(
-        process.env.REACT_APP_SERVER + `/api/admin/customers/${id}`
+        process.env.REACT_APP_SERVER + `/api/admin/customers/${id}`,
+        {
+          headers: {
+            Authorization: localStorage.getItem("cToken"),
+          },
+        }
       );
       setCustomer(data);
       setLoading(true);
@@ -27,7 +33,12 @@ const HomeItems = () => {
   useEffect(() => {
     const fatchParcels = async () => {
       const { data } = await axios.get(
-        process.env.REACT_APP_SERVER + "/api/admin/parcels"
+        process.env.REACT_APP_SERVER + "/api/admin/parcels",
+        {
+          headers: {
+            Authorization: localStorage.getItem("cToken"),
+          },
+        }
       );
       const newParcels = data.filter((curData) => {
         return curData.customerID === id;
@@ -41,7 +52,12 @@ const HomeItems = () => {
   useEffect(() => {
     const fatchContacts = async () => {
       const { data } = await axios.get(
-        process.env.REACT_APP_SERVER + "/api/admin/contacts"
+        process.env.REACT_APP_SERVER + "/api/admin/contacts",
+        {
+          headers: {
+            Authorization: localStorage.getItem("cToken"),
+          },
+        }
       );
       const newContacts = data.filter((curData) => {
         return curData.customerID === id;
@@ -51,8 +67,62 @@ const HomeItems = () => {
     fatchContacts();
   }, [contacts, id]);
 
+  const [otpLoading, setOtpLoading] = useState(false);
+  const otpSender = (e) => {
+    e.preventDefault();
+    setOtpLoading(true);
+    let data = {
+      id,
+    };
+    axios
+      .put(process.env.REACT_APP_SERVER + "/api/customer-email-otp", data, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("cToken"),
+        },
+      })
+      .then((response) => {
+        setOtpLoading(false);
+        if (response.data.message === "OTP has been send to your email!") {
+          Swal.fire({
+            icon: "success",
+            text: response.data.message,
+            showConfirmButton: false,
+            timer: 1500,
+          }).then(() => (window.location.href = "/profile/email-verification"));
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: response.data.message,
+          });
+        }
+      })
+      .catch((error) => {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Update field!",
+        });
+      });
+  };
+
   return (
     <>
+      {customer.emailVerification === false && (
+        <>
+          {otpLoading ? (
+            <Loader />
+          ) : (
+            <Alert severity="warning" className="otpLink">
+              <Link to="/profile/email-verification" onClick={otpSender}>
+                Please, complete your email varification. Click for OTP
+              </Link>
+            </Alert>
+          )}
+        </>
+      )}
+
       {loading ? (
         <div className="dashboardItems">
           <Link to="/profile">

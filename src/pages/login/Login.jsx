@@ -6,10 +6,10 @@ import {
   OutlinedInput,
   TextField,
 } from "@mui/material";
-import Title from "../../components/title/Title";
+import axios from "axios";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import Title from "../../components/title/Title";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -101,12 +101,17 @@ const Login = () => {
                       label="Password"
                     />
                   </FormControl>
-                  <input type="submit" className="btnPrimary" value="Login" />
+                  <input
+                    type="submit"
+                    value="LOGIN"
+                    className="btnPrimary"
+                    value="Login"
+                  />
                 </form>
-                <div className="loginLinks">
-                  <Link to="/signup">Registration?</Link>
-                  <Link to={process.env.REACT_APP_RIDER}>Rider?</Link>
-                </div>
+                <Link to="/signup">Registration?</Link>
+                <Link to="http://localhost:4000/" target="_blank">
+                  Rider?
+                </Link>
               </div>
             </div>
           </div>

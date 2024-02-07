@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import Title from "../../components/title/Title";
 import { TextField } from "@mui/material";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import Loader from "../../components/loader/Loader";
+import Title from "../../components/title/Title";
 
 const AddContact = () => {
   const [subject, setSubject] = useState("");
@@ -16,7 +16,12 @@ const AddContact = () => {
   useEffect(() => {
     const fatchCustomer = async () => {
       const { data } = await axios.get(
-        process.env.REACT_APP_SERVER + `/api/admin/customers/${customerID}`
+        process.env.REACT_APP_SERVER + `/api/admin/customers/${customerID}`,
+        {
+          headers: {
+            Authorization: localStorage.getItem("cToken"),
+          },
+        }
       );
       setCustomer(data);
       setLoading(true);
@@ -38,6 +43,7 @@ const AddContact = () => {
       .post(process.env.REACT_APP_SERVER + "/api/admin/contacts", data, {
         headers: {
           "Content-Type": "application/json",
+          Authorization: localStorage.getItem("cToken"),
         },
       })
       .then((response) => {

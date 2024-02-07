@@ -1,5 +1,3 @@
-import React, { useEffect, useState } from "react";
-import Title from "../../components/title/Title";
 import {
   FormControl,
   FormControlLabel,
@@ -11,20 +9,27 @@ import {
   TextField,
 } from "@mui/material";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import Loader from "../../components/loader/Loader";
+import Title from "../../components/title/Title";
 
 const AddParcel = () => {
   const [sendLocation, setSendLocation] = useState("");
   const [endLocation, setEndLocation] = useState("");
+  const [duration, setDuration] = useState("");
   const [type, setType] = useState("");
+  const [note, setNote] = useState("");
   const [weight, setWeight] = useState(null);
+  const [length, setLength] = useState(null);
   const [totalPrice, setTotalPrice] = useState(0);
   const [recName, setRecName] = useState("");
   const [recPhone, setRecPhone] = useState("");
   const [recEmail, setRecEmail] = useState("");
   const [recAddress, setRecAddress] = useState("");
   const [payment, setPayment] = useState("");
+  const [catPrice, setCatPrice] = useState(1);
+  const [lengthPrice, setLengthPrice] = useState(1);
 
   // GET BRANCHES
   const [branches, setBranches] = useState([]);
@@ -32,7 +37,12 @@ const AddParcel = () => {
   useEffect(() => {
     const fatchBranches = async () => {
       const { data } = await axios.get(
-        process.env.REACT_APP_SERVER + "/api/admin/branches"
+        process.env.REACT_APP_SERVER + "/api/admin/branches",
+        {
+          headers: {
+            Authorization: localStorage.getItem("cToken"),
+          },
+        }
       );
       setBranches(data);
     };
@@ -44,13 +54,19 @@ const AddParcel = () => {
   useEffect(() => {
     const fatchPrices = async () => {
       const { data } = await axios.get(
-        process.env.REACT_APP_SERVER + "/api/admin/prices"
+        process.env.REACT_APP_SERVER + "/api/admin/prices",
+        {
+          headers: {
+            Authorization: localStorage.getItem("cToken"),
+          },
+        }
       );
       setPrices(data);
     };
     fatchPrices();
   }, [prices]);
 
+  // Price Filtering by Branchs
   const [parcelPrice, setParcelPrice] = useState(0);
   useEffect(() => {
     const newPrice = prices.filter((curData) => {
@@ -64,21 +80,52 @@ const AddParcel = () => {
     setParcelPrice(newPrice[0]);
   }, [sendLocation && endLocation]);
 
+  // Price Calculation
   useEffect(() => {
+    // Category variant price
+    if (type === "Glass") {
+      setCatPrice(1.5);
+    } else if (type === "Liquid") {
+      setCatPrice(2);
+    } else {
+      setCatPrice(1);
+    }
+
+    // Length variant price
+    if (length >= 0) {
+      setLengthPrice(length * 5);
+    }
+
     if (parcelPrice === 0) {
       setTotalPrice(0);
     } else if (parcelPrice !== undefined) {
-      setTotalPrice(parcelPrice.price * weight + 100);
+      setTotalPrice(parcelPrice.price * weight * catPrice + lengthPrice);
+      setDuration(parcelPrice.duration);
     }
-  }, [parcelPrice, sendLocation, endLocation, weight]);
+  }, [
+    parcelPrice,
+    sendLocation,
+    endLocation,
+    weight,
+    type,
+    catPrice,
+    length,
+    lengthPrice,
+  ]);
 
   // Get current logged customer
   const id = localStorage.getItem("cID");
   const [customer, setCustomer] = useState([]);
+  // Get current logged in customer details
   useEffect(() => {
     const fatchCustomer = async () => {
       const { data } = await axios.get(
-        process.env.REACT_APP_SERVER + `/api/admin/customers/${id}`
+        process.env.REACT_APP_SERVER + `/api/admin/customers/${id}`,
+        {
+          headers: {
+            Authorization: localStorage.getItem("cToken"),
+          },
+        }
       );
       setCustomer(data);
       setLoading(true);
@@ -102,13 +149,17 @@ const AddParcel = () => {
     },
   ];
 
+  // Submit parcel order
   const submitHandler = (e) => {
     e.preventDefault();
     let data = {
       customerID: id,
       customerName: customer.name,
+      duration,
       type,
+      note,
       weight,
+      length,
       deliveryCost: 100,
       totalPrice,
       recName,
@@ -123,6 +174,7 @@ const AddParcel = () => {
       .post(process.env.REACT_APP_SERVER + "/api/admin/parcels", data, {
         headers: {
           "Content-Type": "application/json",
+          Authorization: localStorage.getItem("cToken"),
         },
       })
       .then((response) => {
@@ -189,6 +241,23 @@ const AddParcel = () => {
                 <TextField
                   required
                   fullWidth
+                  label="Duration"
+                  helperText="Duration based on location..."
+                  value={duration}
+                  InputProps={
+                    ({
+                      readOnly: true,
+                    },
+                    {
+                      startAdornment: (
+                        <InputAdornment position="start">Days</InputAdornment>
+                      ),
+                    })
+                  }
+                />
+                <TextField
+                  required
+                  fullWidth
                   select
                   label="Category"
                   value={type}
@@ -200,6 +269,13 @@ const AddParcel = () => {
                     </MenuItem>
                   ))}
                 </TextField>
+                <TextField
+                  required
+                  fullWidth
+                  label="Write a short note about parcel..."
+                  value={note}
+                  onChange={(e) => setNote(e.target.value)}
+                />
                 <TextField
                   required
                   fullWidth
@@ -216,36 +292,15 @@ const AddParcel = () => {
                 <TextField
                   required
                   fullWidth
-                  label="Parcel price"
-                  helperText="Per kilogram..."
-                  value={parcelPrice !== undefined ? parcelPrice.price : 0}
-                  InputProps={
-                    ({
-                      readOnly: true,
-                    },
-                    {
-                      startAdornment: (
-                        <InputAdornment position="start">৳</InputAdornment>
-                      ),
-                    })
-                  }
-                />
-                <TextField
-                  required
-                  fullWidth
-                  label="Delivery cost"
-                  helperText="Automatic calculate..."
-                  value="100"
-                  InputProps={
-                    ({
-                      readOnly: true,
-                    },
-                    {
-                      startAdornment: (
-                        <InputAdornment position="start">৳</InputAdornment>
-                      ),
-                    })
-                  }
+                  label="Length"
+                  type="number"
+                  value={length}
+                  onChange={(e) => setLength(e.target.value)}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">Inch</InputAdornment>
+                    ),
+                  }}
                 />
                 <TextField
                   required

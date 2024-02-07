@@ -2,22 +2,23 @@ import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
 import Footer from "./components/footer/Footer";
 import Menu from "./components/menu/Menu";
 import Navbar from "./components/navbar/Navbar";
+import Branches from "./pages/branches/Branches";
+import AddContact from "./pages/contact/AddContact";
+import Contact from "./pages/contact/Contact";
+import SingleContact from "./pages/contact/SingleContact";
 import Home from "./pages/home/Home";
 import Login from "./pages/login/Login";
 import Signup from "./pages/login/Signup";
-import Prices from "./pages/prices/Prices";
-import Parcels from "./pages/parcels/Parcels";
-import Contact from "./pages/contact/Contact";
-import SingleContact from "./pages/contact/SingleContact";
-import SingleParsel from "./pages/parcels/SingleParsel";
 import NotFoundPage from "./pages/notFoundPage/NotFoundPage";
-import Branches from "./pages/branches/Branches";
-import Profile from "./pages/profile/Profile";
-import EditDetails from "./pages/profile/EditDetails";
+import AddParcel from "./pages/parcels/AddParcel";
+import Parcels from "./pages/parcels/Parcels";
+import SingleParsel from "./pages/parcels/SingleParsel";
+import Prices from "./pages/prices/Prices";
 import ChangePassword from "./pages/profile/ChangePassword";
 import ChangePicture from "./pages/profile/ChangePicture";
-import AddContact from "./pages/contact/AddContact";
-import AddParcel from "./pages/parcels/AddParcel";
+import EditDetails from "./pages/profile/EditDetails";
+import EmailVerification from "./pages/profile/EmailVerification";
+import Profile from "./pages/profile/Profile";
 
 function App() {
   const Layout = () => {
@@ -95,6 +96,10 @@ function App() {
         {
           path: "/profile/change-password",
           element: <ChangePassword />,
+        },
+        {
+          path: "/profile/email-verification",
+          element: <EmailVerification />,
         },
         {
           path: "*",

@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import React, { useEffect, useState } from "react";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
 import Loader from "../../components/loader/Loader";
 
 const BranchTable = () => {
@@ -11,7 +11,12 @@ const BranchTable = () => {
   useEffect(() => {
     const fatchBranches = async () => {
       const { data } = await axios.get(
-        process.env.REACT_APP_SERVER + "/api/admin/branches"
+        process.env.REACT_APP_SERVER + "/api/admin/branches",
+        {
+          headers: {
+            Authorization: localStorage.getItem("cToken"),
+          },
+        }
       );
       setBranches(data);
       setLoading(true);

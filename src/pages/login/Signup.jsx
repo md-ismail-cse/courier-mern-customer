@@ -1,16 +1,17 @@
-import { useState } from "react";
-import Title from "../../components/title/Title";
 import {
   FormControl,
   IconButton,
   InputAdornment,
   InputLabel,
+  MenuItem,
   OutlinedInput,
   TextField,
 } from "@mui/material";
-import { Link } from "react-router-dom";
 import axios from "axios";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
+import Title from "../../components/title/Title";
 
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -29,6 +30,7 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [conPassword, setConPassword] = useState("");
   const [phone, setPhone] = useState("");
+  const [gender, setGender] = useState("");
   const [address, setAddress] = useState("");
 
   if (localStorage.getItem("cToken")) {
@@ -43,10 +45,11 @@ const Signup = () => {
         email,
         password,
         phone,
+        gender,
         address,
       };
       axios
-        .post(process.env.REACT_APP_SERVER + `/api/admin/customers`, data, {
+        .post(process.env.REACT_APP_SERVER + `/api/admin/customer-reg`, data, {
           headers: {
             "Content-Type": "application/json",
           },
@@ -182,16 +185,24 @@ const Signup = () => {
                   <TextField
                     required
                     fullWidth
+                    select
+                    label="Gender"
+                    value={gender}
+                    onChange={(e) => setGender(e.target.value)}
+                  >
+                    <MenuItem value="Male">Male</MenuItem>
+                    <MenuItem value="Female">Female</MenuItem>
+                  </TextField>
+                  <TextField
+                    required
+                    fullWidth
                     label="Address"
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
                   />
-                  <input type="submit" className="btnPrimary" />
+                  <input type="submit" value="SIGNUP" className="btnPrimary" />
                 </form>
-                <div className="loginLinks">
-                  <Link to="/">Login?</Link>
-                  <Link to={process.env.REACT_APP_RIDER}>Rider?</Link>
-                </div>
+                <Link to="/">Login?</Link>
               </div>
             </div>
           </div>
